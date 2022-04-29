@@ -1,0 +1,70 @@
+ load("dataset/wine.Rda")
+ load("dataset/vertebral.Rda")
+ load("dataset/transfusion.Rda")
+ load("dataset/SPECTF.Rda")
+ load("dataset/segmentation.Rda")
+ load("dataset/parkinsons.Rda")
+ load("dataset/glass.Rda")
+ load("dataset/ctg.Rda")
+ load("dataset/cov.Rda")
+ load("dataset/concrete.Rda")
+ load("dataset/breast.Rda")
+ load("dataset/bands.Rda")
+ load("dataset/adult.Rda")
+ load("dataset/abalone.Rda")
+ load("dataset/Caravan.Rda")
+ load("dataset/banking.Rda")
+ load("dataset/ecoli.Rda")
+ table(wine$Class)
+ table(vertebral$Class)
+ table(transfusion$Class)
+ table(SPECTF$Class)
+ table(segmentation$Class)
+ table(parkinsons$Class)
+ table(glass$Class)
+ table(ctg$Class)
+ table(cov$Class)
+ table(concrete$Class)
+ table(breast$Class)
+ table(bands$Class)
+ table(adult$Class)
+ table(abalone$Class)
+ table(Caravan$Purchase)
+ table(banking$y)
+
+ 
+ imb=function(data){
+   set.seed(100)
+   min=data[data$Class=="yes",]
+   maj=data[data$Class=="no",]
+   nmin=nrow(min)
+   nmaj=nrow(maj)
+   n=as.integer(0.01*nmaj)
+   new.min=min[sample(nrow(min), n), ]
+   newdata=rbind(maj,new.min)
+   table=table(newdata$Class)
+   my_list <- list(data=newdata,table=table)
+   return(my_list)
+ }
+ vertebral=imb(vertebral)$data 
+ transfusion=imb(transfusion)$data 
+ segmentation=imb(segmentation)$data 
+ parkinsons=imb(parkinsons)$data 
+ ctg=imb(ctg)$data 
+ concrete=imb(concrete)$data 
+ breast=imb(breast)$data 
+ bands=imb(bands)$data 
+ adultnew=imb(adult)$data 
+
+bankingmin=banking[banking$y=="yes",]
+bankingmin$y=NULL
+write.csv(banking.min,'bankingmin.csv')
+winemin=wine[wine$Class=="yes",]
+winemin$Class=NULL
+write.csv(winemin,'winemin.csv')
+Caravanmin=Caravan[Caravan$Class=="yes",]
+Caravanmin$Class=NULL
+write.csv(Caravanmin,'Caravanmin.csv')
+abalonemin=abalone[abalone$Class=="yes",]
+abalonemin$Class=NULL
+write.csv(abalonemin,'abalonemin.csv')
